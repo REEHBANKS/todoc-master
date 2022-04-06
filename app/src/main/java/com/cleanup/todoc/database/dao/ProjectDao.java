@@ -18,7 +18,7 @@ public interface ProjectDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
 
     /**
-     * Create Project
+     * Create a Project
      */
     void createProject (Project project);
 
