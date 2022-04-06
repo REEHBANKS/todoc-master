@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey;
 public class Project {
     /**
      * The unique identifier of the project
-     * new project
+     * new project open
      */
     @PrimaryKey
     private final long id;
