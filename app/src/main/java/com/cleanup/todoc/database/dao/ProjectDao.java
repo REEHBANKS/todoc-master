@@ -20,12 +20,12 @@ public interface ProjectDao {
     /**
      * Create a Project
      */
-    void createProject (Project project);
+    void createProject(Project project);
 
     /**
      * get a project
      */
     @Query("SELECT * FROM Project WHERE id = :projectId")
-    LiveData<Project> getProject (long projectId);
+    LiveData<Project> getProject(long projectId);
 }
 

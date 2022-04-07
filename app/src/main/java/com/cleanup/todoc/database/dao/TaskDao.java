@@ -18,24 +18,25 @@ public interface TaskDao {
      * get the list of tasks for a project
      */
     @Query("SELECT * FROM Task WHERE projectId = :projectId")
-    LiveData<List<Task>> getItems(long projectId);
+    LiveData<List<Task>> getTasks(long projectId);
 
     /**
-     *  to create a new task to do
+     * to create a new task to do
      */
     @Insert
-    long insertItem(Task task);
+    long insertTask(Task task);
 
     /**
      * Update a task
      */
     @Update
-    int updateItem(Task task);
+    int updateTask(Task task);
 
     /**
      * Remove a task
      */
-    @Query("DELETE FROM Task WHERE id = :itemId")
-    int deleteItem(long itemId);
+    @Query("DELETE FROM Task WHERE id = :taskId")
+    int deleteTask(long taskId);
 
 }
+
