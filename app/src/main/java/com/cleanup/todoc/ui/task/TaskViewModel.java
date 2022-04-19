@@ -1,7 +1,6 @@
 package com.cleanup.todoc.ui.task;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,32 +13,25 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 public class TaskViewModel extends ViewModel {
+
     // REPOSITORIES
     private final TaskDataRepository taskDataSource;
     private final ProjectDataRepository projectDataSource;
     private final Executor executor;
 
     // DATA
-    @Nullable
-    private LiveData<Project> currentProject;
 
     public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
         this.projectDataSource = projectDataSource;
         this.executor = executor;
+
     }
 
-    public void init(long projectId) {
-        if(this.currentProject != null){
-            return;
-        }
-
-        currentProject = projectDataSource.getProject(projectId);
-    }
 
     // FOR PROJECT
-    public LiveData<Project> getProject(){
-        return this.currentProject;
+    public LiveData<List<Project>> getAllProject(){
+        return projectDataSource.getAllProject();
     }
 
     // FOR TASK

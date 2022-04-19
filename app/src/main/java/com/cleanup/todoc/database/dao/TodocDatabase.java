@@ -25,20 +25,25 @@ public abstract class TodocDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext()
                             ,TodocDatabase.class, "MyDatabase.db")
-                            .addCallback(testDatabase())
+                            .addCallback(prePopulate())
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
-    private static Callback testDatabase() {
+    private static Callback prePopulate() {
         return new Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
                 Executors.newSingleThreadExecutor().execute(() -> INSTANCE.projectDao()
-                        .createProject(new Project(6L, "Projet Mars", 0xFFB4CDBA)));
+                        .createProject(
+                                new Project(1L, "Projet Tartampion", 0xFFEADAD1),
+                                new Project(2L, "Projet Lucidia", 0xFFB4CDBA),
+                                new Project(3L, "Projet Circus", 0xFFA3CED2)
+                                ));
+
             }
         };
     }

@@ -21,7 +21,7 @@ public class Task {
     /**
      * The unique identifier of the task
      */
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public long id;
 
     /**
@@ -42,6 +42,8 @@ public class Task {
      */
     public long creationTimestamp;
 
+    private Boolean isSelected;
+
     /**
      * Instantiates a new Task.
      *
@@ -55,6 +57,7 @@ public class Task {
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
+        this.isSelected = false;
     }
 
     /**
@@ -112,6 +115,10 @@ public class Task {
     private void setName(@NonNull String name) {
         this.name = name;
     }
+
+    public Boolean getSelected() { return isSelected; }
+    public void setSelected(Boolean selected) { isSelected = selected; }
+
 
     /**
      * Sets the timestamp when the task has been created.

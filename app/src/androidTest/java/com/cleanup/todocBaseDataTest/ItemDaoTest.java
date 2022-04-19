@@ -56,8 +56,8 @@ public class ItemDaoTest {
      */
     @Test
     public void insertAndGetter() throws InterruptedException {
-        this.database.projectDao().createProject(PROJECT_DEMO);
-        Project project = LiveDataTestUtil.getValue(this.database.projectDao().getProject(USER_ID));
+        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
+        Project project = (Project) LiveDataTestUtil.getValue(this.database.projectDao().getAllProject(USER_ID));
         assertTrue(project.getName().equals(PROJECT_DEMO.getName()) && project.getId() == USER_ID);
     }
 
@@ -73,7 +73,7 @@ public class ItemDaoTest {
     @Test
     public void insertAndGetTasks() throws  InterruptedException {
         // Adding 1 Project & 4 tasks.
-        this.database.projectDao().createProject(PROJECT_DEMO);
+        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
         this.database.taskDao().insertTask(VITRES_BATIMENT);
         this.database.taskDao().insertTask(SOL_HALL);
         this.database.taskDao().insertTask(PLAFOND);
@@ -84,7 +84,7 @@ public class ItemDaoTest {
     }
     @Test
     public void insertAndUpdateTasks() throws InterruptedException{
-        this.database.projectDao().createProject(PROJECT_DEMO);
+        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
         this.database.taskDao().insertTask(VITRES_BATIMENT);
 
         Task taskAdded = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID)).get(0);
@@ -98,7 +98,7 @@ public class ItemDaoTest {
     @Test
 
     public void insertAndDeleteTasks() throws InterruptedException {
-        this.database.projectDao().createProject(PROJECT_DEMO);
+        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
         this.database.taskDao().insertTask(VITRES_BATIMENT);
         Task taskAdded = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID)).get(0);
         this.database.taskDao().deleteTask(taskAdded.getId());

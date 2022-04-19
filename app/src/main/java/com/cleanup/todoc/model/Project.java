@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "projects")
 
 /**
  * <p>Models for project in which tasks are included.</p>
