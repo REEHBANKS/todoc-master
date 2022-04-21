@@ -42,22 +42,18 @@ public class Task {
      */
     public long creationTimestamp;
 
-    private Boolean isSelected;
 
     /**
      * Instantiates a new Task.
      *
-     * @param id                the unique identifier of the task to set
      * @param projectId         the unique identifier of the project associated to the task to set
      * @param name              the name of the task to set
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
-        this.setId(id);
+    public Task( long projectId, @NonNull String name, long creationTimestamp) {
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
-        this.isSelected = false;
     }
 
     /**
@@ -115,9 +111,6 @@ public class Task {
     private void setName(@NonNull String name) {
         this.name = name;
     }
-
-    public Boolean getSelected() { return isSelected; }
-    public void setSelected(Boolean selected) { isSelected = selected; }
 
 
     /**

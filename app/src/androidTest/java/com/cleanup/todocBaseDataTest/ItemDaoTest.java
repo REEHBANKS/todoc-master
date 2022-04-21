@@ -57,7 +57,7 @@ public class ItemDaoTest {
     @Test
     public void insertAndGetter() throws InterruptedException {
         this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
-        Project project = (Project) LiveDataTestUtil.getValue(this.database.projectDao().getAllProject(USER_ID));
+        Project project = (Project) LiveDataTestUtil.getValue(this.database.projectDao().getAllProject());
         assertTrue(project.getName().equals(PROJECT_DEMO.getName()) && project.getId() == USER_ID);
     }
 

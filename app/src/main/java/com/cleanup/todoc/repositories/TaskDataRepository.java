@@ -18,10 +18,15 @@ public class TaskDataRepository {
     public LiveData<List<Task>> getTasks(long taskId) {
         return this.taskDao.getTasks(taskId);
     }
+    // Get all Projects
+    public LiveData<List<Task>> getAllTasks() {
+        return this.taskDao.getAllTasks();}
     // create
     public void createTask(Task task) {
         taskDao.insertTask(task);
     }
+
+    public void addTask(Task tasks){taskDao.insertTasks(tasks);}
     //UPDATE
     public void updateTask(Task task) {
         taskDao.updateTask(task);

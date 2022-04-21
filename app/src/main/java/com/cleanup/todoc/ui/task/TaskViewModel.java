@@ -15,43 +15,55 @@ import java.util.concurrent.Executor;
 public class TaskViewModel extends ViewModel {
 
     // REPOSITORIES
-    private final TaskDataRepository taskDataSource;
-    private final ProjectDataRepository projectDataSource;
+    private final TaskDataRepository taskDataRepository;
+    private final ProjectDataRepository projectDataRepository;
     private final Executor executor;
 
     // DATA
 
-    public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
-        this.taskDataSource = taskDataSource;
-        this.projectDataSource = projectDataSource;
+    public TaskViewModel(TaskDataRepository taskDataRepository, ProjectDataRepository projectDataSource, Executor executor) {
+        this.taskDataRepository = taskDataRepository;
+        this.projectDataRepository = projectDataSource;
         this.executor = executor;
 
     }
 
 
-    // FOR PROJECT
+    // FOR All Projects
     public LiveData<List<Project>> getAllProject(){
-        return projectDataSource.getAllProject();
+        return projectDataRepository.getAllProject();
+    }
+
+    // For All Tasks
+    public LiveData<List<Task>> getAllTasks(){
+        return taskDataRepository.getAllTasks();
     }
 
     // FOR TASK
 
     public LiveData<List<Task>> getTasks(long projectId) {
-        return taskDataSource.getTasks(projectId);
+        return taskDataRepository.getTasks(projectId);
     }
 
-    public void createTask(long id, long projectId, @NonNull String name, long creationTimestamp) {
+    public void createTask( long projectId, @NonNull String name, long creationTimestamp) {
         executor.execute(() -> {
-            taskDataSource.createTask(new Task(id, projectId, name, creationTimestamp));
+            taskDataRepository.createTask(new Task( projectId, name, creationTimestamp));
+        });
+    }
+    public void addTasks( long projectId, @NonNull String name, long creationTimestamp) {
+        executor.execute(() -> {
+            taskDataRepository.createTask(new Task( projectId, name, creationTimestamp));
         });
     }
 
+
+
     public void updateTask(Task task) {
-        executor.execute(() -> taskDataSource.updateTask(task));
+        executor.execute(() -> taskDataRepository.updateTask(task));
     }
 
     public void deleteTask(long taskId) {
-        executor.execute(() -> taskDataSource.deleteTask(taskId));
+        executor.execute(() -> taskDataRepository.deleteTask(taskId));
     }
 
 }

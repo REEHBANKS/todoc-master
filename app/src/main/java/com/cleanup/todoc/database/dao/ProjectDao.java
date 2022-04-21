@@ -22,9 +22,10 @@ public interface ProjectDao {
     /**
      * Create a Project
      */
-    void createProject(Project projetTartampion, Project projet_tartampion, Project project);
+    void createProject(Project id, Project name, Project color);
 
     /**
+     *
      * get all project
      */
     @Query("SELECT * FROM projects")

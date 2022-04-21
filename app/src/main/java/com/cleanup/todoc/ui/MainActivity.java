@@ -137,19 +137,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void getTasks() {
         this.taskViewModel.getTasks(USER_ID).observe(this, this::updateTaksList);
     }
-    //TODO
-    private void createTask() {
-       // taskViewModel.createTask(, dialogSpinner.getSelectedItemId(), dialogEditText.getText().toString(), );
-    }
+
 
     private void deleteTask(Task task) {
         this.taskViewModel.deleteTask(task.getId());
-    }
-
-    //TODO
-    private void updateTask(Task task) {
-        task.setSelected(!task.getSelected());
-        this.taskViewModel.updateTask(task);
     }
 
 
@@ -212,19 +203,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogEditText.setError(getString(R.string.empty_task_name));
             }
             // If both project and name of the task have been set
-            else if (taskProject != null) {
+            else if (taskProject != null && taskName.trim().isEmpty()) {
 
+                addTasks(taskProject);
 
-
-                long id = (long) (Math.random()*(50));
-
-                Task task = new Task(
-                        id,
-                        taskProject.getId(),
-                        taskName,
-                        new Date().getTime()
-                );
-                addTask(task);
 
                 dialogInterface.dismiss();
             }
@@ -265,14 +247,25 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         });
     }
 
+    private void getCurrentTask(){
+        taskViewModel.getAllTasks().observe(this
+                , new Observer<List<Task>>() {
+                    @Override
+                    public void onChanged(List<Task> tasks) {
+
+                    }
+                });
+
+    }
+
     /**
      * Adds the given task to the list of created tasks.
      *
-     * @param task the task to be added to the list
+
      */
-    private void addTask(@NonNull Task task) {
-        tasks.add(task);
-        updateTasks();
+    private void addTasks(Project project) {
+        assert dialogEditText != null;
+        taskViewModel.addTasks(project.getId(),dialogEditText.getText().toString() , new Date().getTime());
     }
 
     /**
@@ -343,6 +336,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 });
             }
         });
+
+
 
         return dialog;
     }

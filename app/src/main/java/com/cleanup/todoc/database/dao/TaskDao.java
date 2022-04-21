@@ -20,11 +20,17 @@ public interface TaskDao {
     @Query("SELECT * FROM Task WHERE projectId = :projectId")
     LiveData<List<Task>> getTasks(long projectId);
 
+    @Query("SELECT * FROM task")
+    LiveData<List<Task>> getAllTasks();
+
     /**
      * to create a new task to do
      */
     @Insert
     long insertTask(Task task);
+
+    @Insert
+    void insertTasks(Task tasks);
 
     /**
      * Update a task
