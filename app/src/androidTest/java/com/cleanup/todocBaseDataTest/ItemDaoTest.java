@@ -27,15 +27,19 @@ public class ItemDaoTest {
      * Project data testing
      */
     private static final long USER_ID = 33;
+    private static final long USER_ID_2 = 55;
+    private static final long USER_ID_3 = 77;
     private static final Project PROJECT_DEMO = new Project(USER_ID, "Projet toto", 0xFFA3CED2);
+    private static final Project PROJECT_DEMO_2 = new Project(USER_ID_2, "Projet Tartampion", 0xFFEADAD1);
+    private static final Project PROJECT_DEMO_3 = new Project(USER_ID_3, "Projet Tartampion", 0xFFEADAD1);
 
     /**
      *  Tasks data testing
      */
-    private static Task VITRES_BATIMENT = new Task(3, USER_ID, "nettoyer les vitres", 18);
-    private static Task SOL_HALL = new Task(9, USER_ID,"balayer le sol", 10);
-    private static Task MUR = new Task(4, USER_ID,"Laver le mur", 11);
-    private static Task PLAFOND = new Task(10, USER_ID,"Inspecter", 12);
+    private static Task cleaningWindows = new Task( USER_ID, "nettoyer les vitres", 18);
+    private static Task sweepTheFloor = new Task( USER_ID_2,"balayer le sol", 10);
+    private static Task washTheWalls = new Task( USER_ID,"Laver le mur", 11);
+    private static Task checkTheWorks = new Task( USER_ID,"Inspecter", 12);
 
     @Rule
     public InstantTaskExecutorRule mInstantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -56,9 +60,10 @@ public class ItemDaoTest {
      */
     @Test
     public void insertAndGetter() throws InterruptedException {
-        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
-        Project project = (Project) LiveDataTestUtil.getValue(this.database.projectDao().getAllProject());
-        assertTrue(project.getName().equals(PROJECT_DEMO.getName()) && project.getId() == USER_ID);
+        this.database.projectDao().createProject(PROJECT_DEMO_2, PROJECT_DEMO,PROJECT_DEMO_3);
+        List<Project> project=  LiveDataTestUtil.getValue(this.database.projectDao().getAllProject());
+        assertTrue(project.size() == 3);
+
     }
 
     /**
@@ -70,36 +75,44 @@ public class ItemDaoTest {
         assertTrue(tasks.isEmpty());
     }
 
+    /**
+     *
+     * Check if each task is well related to its project
+     */
     @Test
     public void insertAndGetTasks() throws  InterruptedException {
-        // Adding 1 Project & 4 tasks.
-        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
-        this.database.taskDao().insertTask(VITRES_BATIMENT);
-        this.database.taskDao().insertTask(SOL_HALL);
-        this.database.taskDao().insertTask(PLAFOND);
-        this.database.taskDao().insertTask(MUR);
+        // Adding 3 Project & 4 tasks.
+        this.database.projectDao().createProject(PROJECT_DEMO_2, PROJECT_DEMO,PROJECT_DEMO_3);
+        this.database.taskDao().insertTask(cleaningWindows);
+        this.database.taskDao().insertTask(sweepTheFloor);
+        this.database.taskDao().insertTask(checkTheWorks);
+        this.database.taskDao().insertTask(washTheWalls);
 
         List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID));
-        assertTrue(tasks.size() == 4);
+        assertTrue(tasks.size() == 3);
+
+        List<Task> tasks_2 = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID_2));
+        assertTrue(tasks_2.size() == 1);
+
+        List<Task> tasks_3 = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID_3));
+        assertTrue(tasks_3.size() == 0);
+
     }
     @Test
     public void insertAndUpdateTasks() throws InterruptedException{
-        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
-        this.database.taskDao().insertTask(VITRES_BATIMENT);
+        this.database.projectDao().createProject(PROJECT_DEMO_2, PROJECT_DEMO,PROJECT_DEMO_3);
+        this.database.taskDao().insertTask(cleaningWindows);
 
         Task taskAdded = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID)).get(0);
         this.database.taskDao().updateTask(taskAdded);
-
         List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID));
-
-       // TODO Completez test get(0)
-        assertTrue(tasks.size()  == 1 && VITRES_BATIMENT.getId() == 3);
+        assertTrue(tasks.size()  == 1 );
     }
     @Test
 
     public void insertAndDeleteTasks() throws InterruptedException {
-        this.database.projectDao().createProject(new Project(5L, "Projet Tartampion", 0xFFEADAD1), new Project(1, "Projet Tartampion", 0xFFEADAD1), PROJECT_DEMO);
-        this.database.taskDao().insertTask(VITRES_BATIMENT);
+        this.database.projectDao().createProject(PROJECT_DEMO_2, PROJECT_DEMO,PROJECT_DEMO_3);
+        this.database.taskDao().insertTask(cleaningWindows);
         Task taskAdded = LiveDataTestUtil.getValue(this.database.taskDao().getTasks(USER_ID)).get(0);
         this.database.taskDao().deleteTask(taskAdded.getId());
 

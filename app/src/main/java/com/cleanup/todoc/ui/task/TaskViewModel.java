@@ -51,9 +51,7 @@ public class TaskViewModel extends ViewModel {
         });
     }
     public void addTasks( long projectId, @NonNull String name, long creationTimestamp) {
-        executor.execute(() -> {
             taskDataRepository.createTask(new Task( projectId, name, creationTimestamp));
-        });
     }
 
 

@@ -14,6 +14,7 @@ import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,8 +50,27 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    void updateTasks(@NonNull final List<Task> tasks) {
+    void updateTasksAndSort(@NonNull final List<Task> tasks, MainActivity.SortMethod sortMethod) {
         this.tasks = tasks;
+        sortTasks(sortMethod);
+    }
+
+    void sortTasks(MainActivity.SortMethod sortMethod) {
+
+        switch (sortMethod) {
+            case ALPHABETICAL:
+                Collections.sort(tasks, new Task.TaskAZComparator());
+                break;
+            case ALPHABETICAL_INVERTED:
+                Collections.sort(tasks, new Task.TaskZAComparator());
+                break;
+            case RECENT_FIRST:
+                Collections.sort(tasks, new Task.TaskRecentComparator());
+                break;
+            case OLD_FIRST:
+                Collections.sort(tasks, new Task.TaskOldComparator());
+                break;
+        }
         notifyDataSetChanged();
     }
 
@@ -117,7 +137,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         /**
          * Instantiates a new TaskViewHolder.
          *
-         * @param itemView the view of the task item
+         * @param itemView           the view of the task item
          * @param deleteTaskListener the listener for when a task needs to be deleted to set
          */
         TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener) {
@@ -139,6 +159,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
                     }
                 }
             });
+
+
         }
 
         /**

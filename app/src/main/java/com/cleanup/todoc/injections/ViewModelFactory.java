@@ -16,8 +16,8 @@ import java.util.concurrent.Executors;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-    private final TaskDataRepository taskDataSource;
-    private final ProjectDataRepository projectDataSource;
+    private final TaskDataRepository taskDataRepository;
+    private final ProjectDataRepository projectDataRepository;
     private final Executor executor;
     private static ViewModelFactory factory;
 
@@ -34,8 +34,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private ViewModelFactory(Context context) {
         TodocDatabase database = TodocDatabase.getInstance(context);
-        this.taskDataSource = new TaskDataRepository(database.taskDao());
-        this.projectDataSource = new ProjectDataRepository(database.projectDao());
+        this.taskDataRepository = new TaskDataRepository(database.taskDao(), database.getQueryExecutor() );
+        this.projectDataRepository = new ProjectDataRepository(database.projectDao());
         this.executor = Executors.newSingleThreadExecutor();
     }
 
@@ -43,7 +43,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create( Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TaskViewModel.class)) {
-            return (T) new TaskViewModel(taskDataSource, projectDataSource, executor);
+            return (T) new TaskViewModel(taskDataRepository, projectDataRepository,executor);
         }
         throw new IllegalArgumentException("Unknow ViewModel class");
     }
